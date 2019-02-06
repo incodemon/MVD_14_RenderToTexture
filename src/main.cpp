@@ -66,7 +66,7 @@ int main(void)
     // Initialize the library
     if (!glfwInit())
         return -1;
-	assert(glGetError());
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -74,7 +74,7 @@ int main(void)
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 #endif
-	assert(glGetError());
+
     // Create a windowed mode window and its OpenGL context
 
     window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hello OpenGL!", NULL, NULL);
