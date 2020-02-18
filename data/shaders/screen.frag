@@ -6,6 +6,11 @@ out vec4 fragColor;
 
 void main(){
 vec3 color = texture(u_screen_texture,v_uv).xyz;
-	fragColor = vec4(color,1.0);
+
+	float averege = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
+	fragColor = vec4(averege,averege,averege,1.0);
+	
+	//Blue Filter
+	//fragColor = vec4(color.x,color.y,1,1.0);
 
 }

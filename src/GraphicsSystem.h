@@ -90,4 +90,5 @@ private:
 	Shader* screen_space_shader_;
 	int screen_space_geom_;
 	GLuint temp_texture_;
+	Framebuffer frame_;
 };

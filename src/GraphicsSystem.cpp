@@ -40,7 +40,7 @@ void GraphicsSystem::init(int window_width, int window_height, std::string asset
 					"data/shaders/screen.vert",
 		"data/shaders/screen.frag"
 		);
-
+	frame_.initColor(window_width, window_height);
 	temp_texture_ = Parsers::parseTexture("data/assets/block_blue.tga");
 
 }
@@ -48,6 +48,7 @@ void GraphicsSystem::init(int window_width, int window_height, std::string asset
 //called after loading everything
 void GraphicsSystem::lateInit() {
     sortMeshes_();
+
 }
 
 void GraphicsSystem::update(float dt) {
@@ -57,7 +58,10 @@ void GraphicsSystem::update(float dt) {
 	if (needUpdateLights)
 		updateLights_();
     
-	bindAndClearScreen_();
+	//bindAndClearScreen_();
+
+	//1st pass -render to frame buffer
+	frame_.bindAndClear();
 
 	resetShaderAndMaterial_();
 
@@ -66,26 +70,39 @@ void GraphicsSystem::update(float dt) {
     }
     
     renderEnvironment_();
+	//2nd  pass, render to screen
+	bindAndClearScreen_();
+
+	resetShaderAndMaterial_();
+	for (auto &mesh : ECS.getAllComponents<Mesh>()) {
+		renderMeshComponent_(mesh);
+	}
+	renderEnvironment_();
 
 	//create the screen space quad
 	Geometry ss_geom;
 	ss_geom.createPlaneGeometry();
 	geometries_.push_back(ss_geom);
 	screen_space_geom_ = (int)geometries_.size() - 1;
+
 	//here we render all of our screen space stuff
 	glDisable(GL_DEPTH_TEST);
-	useShader(screen_space_shader_);
-	screen_space_shader_->setTexture(U_SCREEN_TEXTURE,temp_texture_, 0);
 
+	useShader(screen_space_shader_);
+
+	screen_space_shader_->setTexture(U_SCREEN_TEXTURE,frame_.color_textures[0], 0);
+
+	//If we divide by 4 we set the image on top bottom left of the screen
 	glViewport(
 				0,
 				0,
-				(GLsizei)viewport_width_ / 4,
-				(GLsizei)viewport_height_ / 4
+				(GLsizei)viewport_width_ /4,
+				(GLsizei)viewport_height_/4 
 	);
 
 
 	geometries_[screen_space_geom_].render();
+
 	
 	glEnable(GL_DEPTH_TEST);
     
