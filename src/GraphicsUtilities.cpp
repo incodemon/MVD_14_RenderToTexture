@@ -90,9 +90,18 @@ int Geometry::createPlaneGeometry() {
 
 	std::vector<GLfloat> vertices, uvs, normals;
 	std::vector<GLuint> indices;
-	vertices = { -1.0f, -1.0f, 0.0f,    1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f };
-	uvs = { 0.0f, 0.0f,   1.0f, 0.0f,    1.0f, 1.0f,   0.0f, 1.0f };
-	normals = { 0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f };
+	vertices = { -1.0f, -1.0f, 0.0f,    
+				1.0f, -1.0f, 0.0f, 
+				1.0f, 1.0f, 0.0f, 
+				-1.0f, 1.0f, 0.0f };
+	uvs = { 0.0f, 0.0f,
+			1.0f, 0.0f,    
+			1.0f, 1.0f,
+			0.0f, 1.0f };
+	normals = { 0.0f, 0.0f, 1.0f,
+				0.0f, 0.0f, 1.0f,
+				0.0f, 0.0f, 1.0f,
+				0.0f, 0.0f, 1.0f };
 	indices = { 0, 1, 2, 0, 2, 3 };
 
 	//generate the OpenGL buffers and create geometry

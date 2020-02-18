@@ -120,7 +120,7 @@ void Game::update(float dt) {
 	gui_system_.update(dt);
 
 	//debug
-	debug_system_.update(dt);
+	//debug_system_.update(dt);
    
 }
 //update game viewports

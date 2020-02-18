@@ -86,4 +86,8 @@ private:
 	bool BBInFrustum_(const AABB& aabb, const lm::mat4& model_view_projection);
 	bool AABBInFrustum_(const AABB& aabb, const lm::mat4& view_projection);
 
+	//frambuffer
+	Shader* screen_space_shader_;
+	int screen_space_geom_;
+	GLuint temp_texture_;
 };

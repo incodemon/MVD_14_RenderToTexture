@@ -36,6 +36,13 @@ void GraphicsSystem::init(int window_width, int window_height, std::string asset
 	//generate light ubo
 	glGenBuffers(1, &light_ubo_);
 
+	screen_space_shader_ = new Shader(
+					"data/shaders/screen.vert",
+		"data/shaders/screen.frag"
+		);
+
+	temp_texture_ = Parsers::parseTexture("data/assets/block_blue.tga");
+
 }
 
 //called after loading everything
@@ -59,6 +66,28 @@ void GraphicsSystem::update(float dt) {
     }
     
     renderEnvironment_();
+
+	//create the screen space quad
+	Geometry ss_geom;
+	ss_geom.createPlaneGeometry();
+	geometries_.push_back(ss_geom);
+	screen_space_geom_ = (int)geometries_.size() - 1;
+	//here we render all of our screen space stuff
+	glDisable(GL_DEPTH_TEST);
+	useShader(screen_space_shader_);
+	screen_space_shader_->setTexture(U_SCREEN_TEXTURE,temp_texture_, 0);
+
+	glViewport(
+				0,
+				0,
+				(GLsizei)viewport_width_ / 4,
+				(GLsizei)viewport_height_ / 4
+	);
+
+
+	geometries_[screen_space_geom_].render();
+	
+	glEnable(GL_DEPTH_TEST);
     
 }
 
